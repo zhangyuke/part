@@ -2,16 +2,16 @@
 
 {block name="button"}
 <!--{if auth("store/goods/add")}-->
-<button data-open='{:url("add")}' data-title="添加商品" class='layui-btn layui-btn-sm layui-btn-primary'>添加商品</button>
+<button data-open='{:url("add")}' data-title="添加兼职" class='layui-btn layui-btn-sm layui-btn-primary'>添加兼职</button>
 <!--{/if}-->
 <!--{if auth("store/goods/remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除商品</button>
+<button data-action='{:url("remove")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除兼职</button>
 <!--{/if}-->
 {/block}
 
 {block name="content"}
 <div class="think-box-shadow">
-    {include file='goods/index_search'}
+    {include file='part/index_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
@@ -22,8 +22,8 @@
             <th class='list-table-sort-td'>
                 <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
             </th>
-            <th class='text-left nowrap' width="10%">商品信息</th>
-            <th class='text-left nowrap' width="10%">商品状态</th>
+            <th class='text-left nowrap' width="10%">兼职信息</th>
+            <th class='text-left nowrap' width="10%">兼职状态</th>
 
             <th class='text-left nowrap' width="10%">售价</th>
 
@@ -41,9 +41,9 @@
                 <img data-tips-image style="width:60px;height:60px" src="{$vo.logo|default=''}" class="margin-right-5 text-top">
                 {/notempty}
                 <div class="inline-block">
-                    商品编号：{$vo.id|default='--'}<br>
+                    兼职编号：{$vo.id|default='--'}<br>
                     所属分类：{$vo.cate.title|default='--'}<br>
-                    商品名称：{$vo.title|default='--'}<br>
+                    兼职名称：{$vo.title|default='--'}<br>
                 </div>
             </td>
             <td class='text-left nowrap'>
@@ -64,20 +64,20 @@
                     {if auth("store/goods/edit")}
                     <a data-dbclick class="layui-btn layui-btn-sm" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
                     {else}
-                    <a data-tips-text="您没有编辑商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">编 辑</a>
+                    <a data-tips-text="您没有编辑兼职的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">编 辑</a>
                     {/if}
 
                     {if isset($vo.status) and $vo.status eq 1}
                     <!--{if auth("store/goods/forbid")}-->
                     <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">下 架</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有下架商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">下 架</a>
+                    <a data-tips-text="您没有下架兼职的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">下 架</a>
                     <!--{/if}-->
                     {else}
                     <!--{if auth("store/goods/resume")}-->
                     <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1">上 架</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有上架商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">上 架</a>
+                    <a data-tips-text="您没有上架兼职的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">上 架</a>
                     <!--{/if}-->
                     {/if}
                 </div>

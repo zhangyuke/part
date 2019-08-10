@@ -2,7 +2,7 @@
 
 {block name="content"}
 
-{include file='store@goods/form_style'}
+{include file='part@part/form_style'}
 
 <form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
 
@@ -10,7 +10,7 @@
 
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs3 relative">
-                <span class="color-green">商品分类</span>
+                <span class="color-green">兼职分类</span>
                 <select class="layui-select" required name="cate_id" lay-search>
                     {foreach $cates as $cate}
                     {if isset($vo.cate_id) and $vo.cate_id eq $cate.id}
@@ -22,14 +22,14 @@
                 </select>
             </label>
             <label class="layui-col-xs9 relative">
-                <span class="color-green">商品名称</span>
-                <input name="title" required class="layui-input" placeholder="请输入商品名称" value="{$vo.title|default=''}">
+                <span class="color-green">兼职名称</span>
+                <input name="title" required class="layui-input" placeholder="请输入兼职名称" value="{$vo.title|default=''}">
             </label>
         </div>
 
 
         <div class="layui-form-item">
-            <span class="color-green label-required-prev">商品LOGO及轮播展示图片</span>
+            <span class="color-green label-required-prev">兼职LOGO及轮播展示图片</span>
             <table class="layui-table">
                 <thead>
                 <tr>
@@ -48,21 +48,21 @@
         <div class="layui-form-item layui-row layui-col-space15">
 
             <label class="layui-col-xs9 relative">
-                <span class="color-green">商品价格</span>
-                <input name="price" required class="layui-input" placeholder="请输入商品价格" value="{$vo.price|default=''}">
+                <span class="color-green">兼职价格</span>
+                <input name="price" required class="layui-input" placeholder="请输入兼职价格" value="{$vo.price|default=''}">
             </label>
         </div>
 
 
         <div class="layui-form-item block">
-            <span class="label-required-prev color-green">商品详细内容</span>
+            <span class="label-required-prev color-green">兼职详细内容</span>
             <textarea name="content">{$vo.content|default=''|raw}</textarea>
         </div>
 
         <div class="layui-form-item text-center">
             {notempty name='vo.id'}<input type="hidden" name="id" value="{$vo.id}">{/notempty}
             <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">取消编辑</button>
-            <button class="layui-btn" type="submit">保存商品</button>
+            <button class="layui-btn" type="submit">保存兼职</button>
         </div>
 
     </div>
@@ -95,7 +95,7 @@
                     layer.close(index);
                 });
             };
-            // 返回商品列表
+            // 返回兼职列表
             $rootScope.hsitoryBack = function () {
                 $.msg.confirm('确定要取消编辑吗？', function (index) {
                     history.back(), $.msg.close(index);
@@ -120,7 +120,7 @@
             // 生成交叉表格数据
             $rootScope.specsTreeData = [];
             $rootScope.specsTreeNava = [];
-            // 当前商品规格发生变化时重新计算规格列表
+            // 当前兼职规格发生变化时重新计算规格列表
             $rootScope.$watch('specs', function () {
                 var data = $rootScope.specs, list = [], navs = [], table = [[]];
                 // 过滤无效记录

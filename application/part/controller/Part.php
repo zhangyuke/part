@@ -2,7 +2,7 @@
 
 
 
-namespace app\store\controller;
+namespace app\part\controller;
 
 use library\Controller;
 use library\tools\Data;
@@ -22,7 +22,7 @@ class Part extends Controller
     protected $table = 'part';
 
     /**
-     * 商品信息管理
+     * 兼职信息管理
      * @auth true
      * @menu true
      * @throws \think\Exception
@@ -33,7 +33,7 @@ class Part extends Controller
      */
     public function index()
     {
-        $this->title = '商品信息管理';
+        $this->title = '兼职信息管理';
         $query = $this->_query($this->table)->equal('status,cate_id')->like('title');
         $query->where(['is_deleted' => '0'])->order('sort desc,id desc')->page();
     }
@@ -47,7 +47,7 @@ class Part extends Controller
      */
     protected function _index_page_filter(&$data)
     {
-        $this->clist = Db::name('StoreGoodsCate')->where(['is_deleted' => '0', 'status' => '1'])->select();
+        $this->clist = Db::name('PartCate')->where(['is_deleted' => '0', 'status' => '1'])->select();
 
         foreach ($data as &$vo) {
             list($vo['list'], $vo['cate']) = [[], []];
@@ -58,23 +58,23 @@ class Part extends Controller
 
 
     /**
-     * 添加商品信息
+     * 添加兼职信息
      * @auth true
      */
     public function add()
     {
-        $this->title = '添加商品信息';
+        $this->title = '添加兼职信息';
         $this->isAddMode = '1';
         $this->_form($this->table, 'form');
     }
 
     /**
-     * 编辑商品信息
+     * 编辑兼职信息
      * @auth true
      */
     public function edit()
     {
-        $this->title = '编辑商品信息';
+        $this->title = '编辑兼职信息';
         $this->isAddMode = '0';
         $this->_form($this->table, 'form');
     }
@@ -90,7 +90,7 @@ class Part extends Controller
      */
     protected function _form_filter(&$data)
     {
-        // 生成商品ID
+        // 生成兼职ID
         //if (empty($data['id'])) $data['id'] = Data::uniqidNumberCode(10);
         if ($this->request->isGet()) {
             $this->cates = Db::name('StoreGoodsCate')->where(['is_deleted' => '0', 'status' => '1'])->order('sort desc,id desc')->select();
@@ -104,12 +104,12 @@ class Part extends Controller
     protected function _form_result($result)
     {
         if ($result && $this->request->isPost()) {
-            $this->success('商品编辑成功！', 'javascript:history.back()');
+            $this->success('兼职编辑成功！', 'javascript:history.back()');
         }
     }
 
     /**
-     * 禁用商品信息
+     * 禁用兼职信息
      * @auth true
      */
     public function forbid()
@@ -118,7 +118,7 @@ class Part extends Controller
     }
 
     /**
-     * 启用商品信息
+     * 启用兼职信息
      * @auth true
      */
     public function resume()
@@ -127,7 +127,7 @@ class Part extends Controller
     }
 
     /**
-     * 删除商品信息
+     * 删除兼职信息
      * @auth true
      */
     public function remove()
