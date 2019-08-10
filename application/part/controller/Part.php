@@ -90,10 +90,13 @@ class Part extends Controller
      */
     protected function _form_filter(&$data)
     {
+
         // 生成兼职ID
         //if (empty($data['id'])) $data['id'] = Data::uniqidNumberCode(10);
         if ($this->request->isGet()) {
-            $this->cates = Db::name('StoreGoodsCate')->where(['is_deleted' => '0', 'status' => '1'])->order('sort desc,id desc')->select();
+
+
+            $this->cates = Db::name('PartCate')->where(['is_deleted' => '0', 'status' => '1'])->order('sort desc,id desc')->select();
         }
     }
 

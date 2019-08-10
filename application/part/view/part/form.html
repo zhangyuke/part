@@ -45,11 +45,121 @@
             <script>$('[name="logo"]').uploadOneImage(), $('[name="image"]').uploadMultipleImage()</script>
         </div>
 
+
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">兼职价格</span>
+                <input name="price"  step="1" min="0" type="number" required class="layui-input" placeholder="请输入兼职价格" value="{$vo.price|default=''}">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">工作日期</span>
+                <input name="word_time" required class="layui-input" placeholder="请输入工作日期" value="{$vo.word_time|default=''}">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">工作时长（小时）</span>
+                <input name="word_num" step="1"  type="number" min="0" max="99" required class="layui-input" placeholder="请输入工作时长" value="{$vo.word_num|default=''}">
+            </label>
+        </div>
+
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">上班（打卡）时间</span>
+                <input name="start_time" type="time" required class="layui-input"  value="{$vo.start_time|default=''}">
+            </label>
+        </div>
+
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">下班（打卡）时间</span>
+                <input name="end_time" type="time" required class="layui-input"  value="{$vo.end_time|default=''}">
+            </label>
+        </div>
+
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">报名时间</span>
+                <input name="sign_time" required class="layui-input" placeholder="请输入报名时间格" value="{$vo.sign_time|default=''}">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">需要人数</span>
+                <input name="need_num" type="number" max="999" required class="layui-input" placeholder="请输入兼职价格" value="{$vo.need_num|default=''}">
+            </label>
+        </div>
+
+
         <div class="layui-form-item layui-row layui-col-space15">
 
             <label class="layui-col-xs9 relative">
                 <span class="color-green">兼职价格</span>
                 <input name="price" required class="layui-input" placeholder="请输入兼职价格" value="{$vo.price|default=''}">
+            </label>
+        </div>
+
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">结算方式</span>
+                <input name="settle_type" required class="layui-input" placeholder="请输入结算方式" value="{$vo.settle_type|default=''}">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">工作地址</span>
+                <input name="word_address" required class="layui-input" placeholder="请输入工作地址" value="{$vo.word_address|default=''}">
+            </label>
+        </div>
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">经度（打卡）</span>
+                <input name="longitude" type="number" required class="layui-input" placeholder="请输入经度" value="{$vo.longitude|default=''}">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">纬度（打卡）</span>
+                <input name="latitude" type="number" required class="layui-input" placeholder="请输入纬度" value="{$vo.latitude|default=''}">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">联系人电话</span>
+                <input name="contact_phone" required class="layui-input" placeholder="请输入联系人电话" value="{$vo.contact_phone|default=''}">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">联系人</span>
+                <input name="contact" required class="layui-input" placeholder="请输入联系人" value="{$vo.contact|default=''}">
             </label>
         </div>
 

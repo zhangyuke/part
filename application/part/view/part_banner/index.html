@@ -1,17 +1,13 @@
 {extend name='admin@main'}
 
 {block name="button"}
-{if auth("store/goods_cate/add")}
-<button data-modal='{:url("add")}' data-title="添加商品分类" class='layui-btn layui-btn-sm layui-btn-primary'>添加商品轮播</button>
-{/if}
-{if auth("store/goods_cate/remove")}
-<button data-action='{:url("remove")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除商品轮播</button>
-{/if}
+<button data-modal='{:url("add")}' data-title="添加兼职分类" class='layui-btn layui-btn-sm layui-btn-primary'>添加兼职轮播</button>
+<button data-action='{:url("remove")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除兼职轮播</button>
 {/block}
 
 {block name="content"}
 <div class="think-box-shadow">
-    {include file='goods_banner/index_search'}
+    {include file='part_banner/index_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
@@ -49,7 +45,7 @@
             <td class='text-left nowrap'>
 
                 {if auth("store/goods_cate/edit")}
-                <a data-title="编辑商品分类" class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <a data-title="编辑兼职分类" class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 {/if}
 
                 {if $vo.status eq 1 and auth("store/goods_cate/forbid")}

@@ -319,6 +319,22 @@ if (!function_exists('download')) {
     }
 }
 
+
+
+if (!function_exists('dd')) {
+    /**
+     * 浏览器友好的变量输出
+     * @param mixed     $var 变量
+     * @param boolean   $echo 是否输出 默认为true 如果为false 则返回输出字符串
+     * @param string    $label 标签 默认为空
+     * @return void|string
+     */
+    function dd($var, $echo = true, $label = null)
+    {
+         Debug::dump($var, $echo, $label); die;
+    }
+}
+
 if (!function_exists('dump')) {
     /**
      * 浏览器友好的变量输出

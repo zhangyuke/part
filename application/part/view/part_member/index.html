@@ -1,0 +1,57 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='part_member/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>兼职标题</th>
+            <th class='text-left nowrap'>会员姓名</th>
+            <th class='text-left nowrap'>会员手机</th>
+            <th class='text-left nowrap'>性别</th>
+            <th class='text-left nowrap'>年龄</th>
+            <th class='text-left nowrap'>状态</th>
+            <th class='text-left nowrap'>上班打卡时间</th>
+            <th class='text-left nowrap'>下班打卡时间</th>
+            <th class='text-left nowrap'>提交时间</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-left nowrap'>
+               <a href="/admin.html#/part/part/index?id={$vo.part_id}"> {$vo.part_title|default='--'}</a>
+            </td>
+            <td class='text-left'><a href="/admin.html#/store/member/index?id={$vo.mid}">{$vo.username|default='--'}</a> </td>
+            <td class='text-left'>{$vo.phone|default='--'}</td>
+            <td class='text-left'>{$vo.sex|default='--'}</td>
+            <td class='text-left'>{$vo.age|default='--'}</td>
+            <td class='text-left'>{$vo.status_s|default='--'}</td>
+            <td class='text-left'>{$vo.go_work_time|default='--'}</td>
+            <td class='text-left'>{$vo.off_work_time|default='--'}</td>
+            <td class='text-left'>{$vo.create_at|format_datetime}</td>
+            <td class='text-left nowrap'>
+
+                <div class="nowrap margin-bottom-5">
+
+                    {if isset($vo.status) and $vo.status eq 0}
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">通 过</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">拒 绝</a>
+                    {elseif isset($vo.status) and $vo.status eq 3}
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1">结 算</a>
+                    {/if}
+                </div>
+
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

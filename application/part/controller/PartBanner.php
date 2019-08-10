@@ -2,25 +2,25 @@
 
 
 
-namespace app\store\controller;
+namespace app\part\controller;
 
 use library\Controller;
 
 /**
- * 商品轮播
+ * 兼职轮播
  * Class GoodsCate
  * @package app\store\controller
  */
-class GoodsBanner extends Controller
+class PartBanner extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    protected $table = 'store_banner';
+    protected $table = 'part_banner';
 
     /**
-     * 商品分类管理
+     * 兼职分类管理
      * @auth true
      * @menu true
      * @throws \think\Exception
@@ -31,33 +31,33 @@ class GoodsBanner extends Controller
      */
     public function index()
     {
-        $this->title = '商品轮播';
+        $this->title = '兼职轮播';
         $query = $this->_query($this->table)->like('title')->equal('status');
         $query->order('sort desc,id desc')->page();
     }
 
     /**
-     * 添加商品分类
+     * 添加兼职分类
      * @auth true
      */
     public function add()
     {
-        $this->title = '添加商品轮播';
+        $this->title = '添加兼职轮播';
         $this->_form($this->table, 'form');
     }
 
     /**
-     * 编辑商品分类
+     * 编辑兼职分类
      * @auth true
      */
     public function edit()
     {
-        $this->title = '编辑商品轮播';
+        $this->title = '编辑兼职轮播';
         $this->_form($this->table, 'form');
     }
 
     /**
-     * 禁用商品分类
+     * 禁用兼职分类
      * @auth true
      */
     public function forbid()
@@ -66,7 +66,7 @@ class GoodsBanner extends Controller
     }
 
     /**
-     * 启用商品分类
+     * 启用兼职分类
      * @auth true
      */
     public function resume()
@@ -75,7 +75,7 @@ class GoodsBanner extends Controller
     }
 
     /**
-     * 删除商品分类
+     * 删除兼职分类
      * @auth true
      */
     public function remove()

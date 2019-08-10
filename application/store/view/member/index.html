@@ -37,7 +37,7 @@
             <td class='text-left'>{$vo.age|default='--'}</td>
             <td class='text-left'>
                 {if $vo.is_auth eq 0} 未认证
-                {elseif $vo.vip_level eq 1} 已认证
+                {elseif $vo.is_auth eq 1} 已认证
                 {/if}
             </td>
             <td class='text-left'>

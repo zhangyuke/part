@@ -2,9 +2,9 @@
     <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">会员昵称</label>
+            <label class="layui-form-label">兼职标题</label>
             <div class="layui-input-inline">
-                <input name="nickname" value="{$Think.get.nickname|default=''}" placeholder="请输入微信昵称" class="layui-input">
+                <input name="part_name" value="{$Think.get.part_name|default=''}" placeholder="请输入微信昵称" class="layui-input">
             </div>
         </div>
 
@@ -16,10 +16,11 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">是否认证</label>
+            <label class="layui-form-label">状态</label>
             <div class="layui-input-inline">
-                <select class="layui-select" name="is_auth">
-                    {foreach [''=>'- 全部 -','1'=>'未认证','2'=>'已认证'] as $k=>$v}
+                <select class="layui-select" name="status">
+                    <option value="">全部</option>
+                    {foreach $part_status as $k=>$v}
                     <option value="{$k}">{$v}</option>
                     {/foreach}
                 </select>
@@ -33,7 +34,7 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">注册时间</label>
+            <label class="layui-form-label">提交时间</label>
             <div class="layui-input-inline">
                 <input name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择发送时间" class="layui-input">
             </div>

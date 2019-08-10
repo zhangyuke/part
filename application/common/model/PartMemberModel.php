@@ -13,6 +13,8 @@ class PartMemberModel extends Model{
 
     protected $table='part_member';
 
+    const STATUS=[0=>'申请报名',1=>'报名通过',2=>'报名拒绝',3=>'待结算',4=>'已结算'];
+
     /**
      * 关联用户
      */
