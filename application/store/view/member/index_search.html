@@ -7,26 +7,31 @@
                 <input name="nickname" value="{$Think.get.nickname|default=''}" placeholder="请输入微信昵称" class="layui-input">
             </div>
         </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">会员姓名</label>
+            <div class="layui-input-inline">
+                <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入微信昵称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">是否认证</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="is_auth">
+                    {foreach [''=>'- 全部 -','1'=>'未认证','2'=>'已认证'] as $k=>$v}
+                    <option value="{$k}">{$v}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">会员手机</label>
             <div class="layui-input-inline">
                 <input name="phone" value="{$Think.get.phone|default=''}" placeholder="请输入会员手机" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">会员级别</label>
-            <div class="layui-input-inline">
-                <select class="layui-select" name="vip_level">
-                    {foreach [''=>'- 全部会员 -','0'=>'游客会员','1'=>'临时会员','2'=>'VIP1会员','3'=>'VIP2会员'] as $k=>$v}
-                    <!--{eq name='Think.get.vip_level' value='$k.""'}-->
-                    <option selected value="{$k}">{$v}</option>
-                    <!--{else}-->
-                    <option value="{$k}">{$v}</option>
-                    <!--{/eq}-->
-                    {/foreach}
-                </select>
-            </div>
-        </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">注册时间</label>
             <div class="layui-input-inline">

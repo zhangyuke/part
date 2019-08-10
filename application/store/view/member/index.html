@@ -7,12 +7,15 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
-            </th>
+
             <th class='text-left nowrap'>会员昵称</th>
+            <th class='text-left nowrap'>会员姓名</th>
             <th class='text-left nowrap'>会员手机</th>
-            <th class='text-left nowrap'>会员级别</th>
+            <th class='text-left nowrap'>身份证号</th>
+            <th class='text-left nowrap'>性别</th>
+            <th class='text-left nowrap'>年龄</th>
+            <th class='text-left nowrap'>认证</th>
+            <th class='text-left nowrap'>会员积分</th>
             <th class='text-left nowrap'>注册时间</th>
         </tr>
         </thead>
@@ -20,22 +23,25 @@
         <tbody>
         {foreach $list as $key=>$vo}
         <tr>
-            <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
-            </td>
+
             <td class='text-left nowrap'>
                 {notempty name='vo.headimg'}
                 <img data-tips-image style="width:20px;height:20px;vertical-align:top" src="{$vo.headimg|default=''}" class="margin-right-5">
                 {/notempty}
                 <div class="inline-block">{$vo.nickname|default='--'}</div>
             </td>
+            <td class='text-left'>{$vo.username|default='--'}</td>
             <td class='text-left'>{$vo.phone|default='--'}</td>
+            <td class='text-left'>{$vo.id_card|default='--'}</td>
+            <td class='text-left'>{$vo.sex|default='--'}</td>
+            <td class='text-left'>{$vo.age|default='--'}</td>
             <td class='text-left'>
-                {if $vo.vip_level eq 0} 游客会员
-                {elseif $vo.vip_level eq 1} 临时会员（{$vo.vip_date|default=''}）
-                {elseif $vo.vip_level eq 2} VIP1会员（{$vo.vip_date|default=''}）
-                {elseif $vo.vip_level eq 3} VIP2会员（{$vo.vip_date|default=''}）
+                {if $vo.is_auth eq 1} 未认证
+                {elseif $vo.vip_level eq 2} 已认证
                 {/if}
+            </td>
+            <td class='text-left'>
+                {$vo.integral|default='--'}
             </td>
             <td class='text-left'>{$vo.create_at|format_datetime}</td>
         </tr>
