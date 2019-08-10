@@ -45,78 +45,14 @@
             <script>$('[name="logo"]').uploadOneImage(), $('[name="image"]').uploadMultipleImage()</script>
         </div>
 
-        <div class="layui-form-item">
-            <span class="color-green label-required-prev">商品规格及商品SKU绑定<span class="color-red font-s12">（规格填写后不允许再次修改）</span></span>
-            <div ng-repeat="x in specs track by $index" style="display:none" class="margin-bottom-10" ng-class="{true:'layui-show'}[isAddMode&&specs.length>0]">
-                <div class="goods-spec-box padding-10 margin-0 relative" style="background:#ddd">
-                    <span class="text-center goods-spec-title">分组</span>
-                    <label class="label-required-null inline-block"><input ng-blur="x.name=trimSpace(x.name)" ng-model="x.name" required placeholder="请输入分组名称"></label>
-                    <div class="pull-right">
-                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-click="addSpecVal(x.list)">增加</a>
-                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-bg-gray'}[$index>0]" ng-click="upSpecRow(specs,$index)">上移</a>
-                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-bg-gray'}[$index<specs.length-1]" ng-click="dnSpecRow(specs,$index)">下移</a>
-                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-click="delSpecRow(specs,$index)" ng-if="specs.length>1">删除</a>
-                    </div>
-                </div>
-                <div class="goods-spec-box padding-10 margin-0 layui-bg-gray block relative" ng-if="x.list && x.list.length > 0">
-                    <label class="label-required-null inline-block margin-right-10 margin-bottom-5 relative nowrap" ng-repeat="xx in x.list">
-                        <input type="checkbox" lay-ignore ng-model="xx.check" ng-click="xx.check=checkListChecked(x.list,$event.target.checked)">
-                        <input type="text" ng-blur="xx.name=trimSpace(xx.name)" ng-model="xx.name" ng-keyup="xx.name=$event.target.value" required placeholder="请输入规格">
-                        <a ng-if="x.list.length>1" ng-click="x.list=delSpecVal(x.list,$index)" class="layui-icon layui-icon-close font-s12 goods-spec-close"></a>
-                    </label>
-                </div>
-            </div>
-            <a ng-if="isAddMode&&specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加分组</a>
-            <table class="layui-table margin-top-10">
-                <thead>
-                <tr>
-                    <th ng-repeat="x in specsTreeNava track by $index" class="nowrap" ng-bind="x"></th>
-                    <th width="10%" class="text-center nowrap">商品SKU <a ng-click="batchSet('sku',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">市场价格 <a ng-click="batchSet('market',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">销售价格 <a ng-click="batchSet('selling',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">虚拟销量 <a ng-click="batchSet('virtual',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">快递计件 <a ng-click="batchSet('express',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">销售状态</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="rows in specsTreeData track by $index">
-                    <td class="layui-bg-gray" ng-if="td.show" rowspan="{{td.span}}" ng-repeat="td in rows" ng-bind="td.name"></td>
-                    <td class="padding-0">
-                        <label class="padding-0 margin-0">
-                            <input ng-blur="rows[0].sku=setValue(rows[0].key,'sku',$event.target.value,'(parseFloat(_)||0).toFixed(0)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].sku">
-                        </label>
-                    </td>
-                    <td class="padding-0">
-                        <label class="padding-0 margin-0">
-                            <input ng-blur="rows[0].market=setValue(rows[0].key,'market',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].market">
-                        </label>
-                    </td>
-                    <td class="padding-0">
-                        <label class="padding-0 margin-0">
-                            <input ng-blur="rows[0].selling=setValue(rows[0].key,'selling',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].selling">
-                        </label>
-                    </td>
-                    <td class="padding-0">
-                        <label class="padding-0 margin-0">
-                            <input ng-blur="rows[0].virtual=setValue(rows[0].key,'virtual',$event.target.value,'(parseInt(_)||0)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].virtual">
-                        </label>
-                    </td>
-                    <td class="padding-0">
-                        <label class="padding-0 margin-0">
-                            <input ng-blur="rows[0].express=setValue(rows[0].key,'express',$event.target.value,'(parseInt(_)||0)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].express">
-                        </label>
-                    </td>
-                    <td class="text-center layui-bg-gray">
-                        <label class="think-checkbox margin-0 full-width full-height block"><input lay-ignore type="checkbox" ng-model="rows[0].status"></label>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <p class="color-desc">请从仓储平台获取商品SKU与商品条码，请注意尽量不要重复，也不能产生订单后再修改！</p>
-            <textarea class="layui-textarea layui-hide" name="specs">{{specs}}</textarea>
-            <textarea class="layui-textarea layui-hide" name="lists">{{specsTreeData}}</textarea>
+        <div class="layui-form-item layui-row layui-col-space15">
+
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">商品价格</span>
+                <input name="price" required class="layui-input" placeholder="请输入商品价格" value="{$vo.price|default=''}">
+            </label>
         </div>
+
 
         <div class="layui-form-item block">
             <span class="label-required-prev color-green">商品详细内容</span>
