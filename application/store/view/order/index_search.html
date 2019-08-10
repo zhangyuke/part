@@ -18,29 +18,12 @@
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
                     {foreach [''=>'- 全部订单 -','2'=>'待付款','3'=>'待发货','4'=>'已发货','5'=>'已完成'] as $k=>$v}
-                    <!--{eq name='Think.get.status' value='$k.""'}-->
-                    <option selected value="{$k}">{$v}</option>
-                    <!--{else}-->
                     <option value="{$k}">{$v}</option>
-                    <!--{/eq}-->
                     {/foreach}
                 </select>
             </div>
         </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">付款状态</label>
-            <div class="layui-input-inline">
-                <select class="layui-select" name="pay_state">
-                    {foreach [''=>'- 全部订单 -','0'=>'未支付的订单','1'=>'已支付的订单'] as $k=>$v}
-                    <!--{eq name='Think.get.pay_state' value='$k.""'}-->
-                    <option selected value="{$k}">{$v}</option>
-                    <!--{else}-->
-                    <option value="{$k}">{$v}</option>
-                    <!--{/eq}-->
-                    {/foreach}
-                </select>
-            </div>
-        </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">下单时间</label>
             <div class="layui-input-inline">
@@ -65,30 +48,8 @@
                 <input name="express_phone" value="{$Think.get.express_phone|default=''}" placeholder="请输入收货手机" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">收货省份</label>
-            <div class="layui-input-inline">
-                <input name="express_province" value="{$Think.get.express_province|default=''}" placeholder="请输入收货省份" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">收货城市</label>
-            <div class="layui-input-inline">
-                <input name="express_city" value="{$Think.get.express_city|default=''}" placeholder="请输入收货城市" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">收货区域</label>
-            <div class="layui-input-inline">
-                <input name="express_area" value="{$Think.get.express_area|default=''}" placeholder="请输入收货区域" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">详细地址</label>
-            <div class="layui-input-inline">
-                <input name="express_address" value="{$Think.get.express_address|default=''}" placeholder="请输入详细地址" class="layui-input">
-            </div>
-        </div>
+
+
         <div class="layui-form-item layui-inline">
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
         </div>
