@@ -13,7 +13,7 @@
  * @param int $code
  * @return false|string
  */
-function return_json($data=[],$msg='',$code=200)
+function return_json($data=[],$msg='成功',$code=200)
 {
     return json_encode(['data'=>$data,'msg'=>$msg,'code'=>$code]);
 }
@@ -60,4 +60,34 @@ function getDistance($longitude1, $latitude1, $longitude2, $latitude2, $unit=1, 
 function string_to_arr($string)
 {
     return explode('|',$string);
+}
+
+
+/**
+ * 获得根据身份证获取年龄
+ * @param $card
+ * @return string
+ */
+function get_card_age($card)
+{
+    $year = substr($card, 6, 4);
+    $monthDay = substr($card, 10, 4);
+
+    $age = date('Y') - $year;
+    if ($monthDay > date('md')) {
+        $age--;
+    }
+    return $age;
+}
+
+/**
+ * 获得根据身份证获取性别
+ * @param $card
+ * @return string
+ */
+function get_card_sex($card)
+{
+    $sex = substr($card, (strlen($card)==15 ? -2 : -1), 1) % 2 ? '男' : '女';
+
+    return $sex;
 }

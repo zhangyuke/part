@@ -22,5 +22,18 @@ class MemberModel extends Model{
     }
 
 
+    /**
+     * 获取用户
+     * @param $id
+     * @return array|\PDOStatement|string|Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public static function get_user_info($id)
+    {
+        return self::where('id',$id)->find();
+    }
+
 
 }
