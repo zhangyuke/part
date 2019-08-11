@@ -49,6 +49,8 @@ class Part extends Controller
     {
         $this->clist = Db::name('PartCate')->where(['is_deleted' => '0', 'status' => '1'])->select();
 
+
+
         foreach ($data as &$vo) {
             list($vo['list'], $vo['cate']) = [[], []];
             foreach ($this->clist as $cate) if ($cate['id'] === $vo['cate_id']) $vo['cate'] = $cate;
@@ -76,6 +78,7 @@ class Part extends Controller
     {
         $this->title = '编辑兼职信息';
         $this->isAddMode = '0';
+
         $this->_form($this->table, 'form');
     }
 

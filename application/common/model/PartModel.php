@@ -21,6 +21,17 @@ class PartModel extends Model{
         return $this->belongsTo('MemberModel','id','mid');
     }
 
+    //计算距离
+    public static function get_distance($data,$longitude1,$latitude1)
+    {
+        foreach ($data as $k=>$v){
+            $data[$k]['distance']=getDistance($longitude1,$latitude1,$v['longitude'],$v['latitude']);
+        }
+        return  $data;
+    }
+
+
+
 
 
 }
