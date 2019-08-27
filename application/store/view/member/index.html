@@ -15,7 +15,10 @@
             <th class='text-left nowrap'>性别</th>
             <th class='text-left nowrap'>年龄</th>
             <th class='text-left nowrap'>认证</th>
-            <th class='text-left nowrap'>会员积分</th>
+            <th class='text-left nowrap'>积分</th>
+            <th class='text-left nowrap'>余额</th>
+            <th class='text-left nowrap'>信用分</th>
+            <th class='text-left nowrap'>会员身份</th>
             <th class='text-left nowrap'>注册时间</th>
         </tr>
         </thead>
@@ -42,6 +45,15 @@
             </td>
             <td class='text-left'>
                 {$vo.integral|default='--'}
+            </td>
+            <td class='text-left'>
+                {$vo.balance|default='--'}
+            </td>
+            <td class='text-left'>
+                {$vo.credit|default='--'}
+            </td>
+            <td class='text-left'>
+                {$vo.user_type|default='--'}
             </td>
             <td class='text-left'>{$vo.create_at|format_datetime}</td>
         </tr>

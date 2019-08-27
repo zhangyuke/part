@@ -4,6 +4,7 @@
 
 namespace app\store\controller;
 
+use app\common\model\MemberModel;
 use library\Controller;
 
 /**
@@ -34,6 +35,20 @@ class Member extends Controller
         $this->title = '会员信息管理';
         $query = $this->_query($this->table)->like('nickname,username,phone')->equal('is_auth');
         $query->dateBetween('create_at')->order('id desc')->page();
+    }
+
+
+    /**
+     * 数据列表处理
+     * @param $data
+     */
+    protected function _index_page_filter(&$data)
+    {
+
+        foreach ($data as &$vo) {
+            $vo['user_type']=MemberModel::USER_TYPE[$vo['user_type']];
+
+        }
     }
 
 }

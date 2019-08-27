@@ -7,20 +7,21 @@ namespace app\part\controller;
 use app\common\model\MemberModel;
 use app\common\model\PartMemberModel;
 use app\common\model\PartModel;
+use app\common\model\WithdrawModel;
 use library\Controller;
 
 /**
- * 会员报名信息管理
+ * 会员提现记录
  * Class Member
  * @package app\store\controller
  */
-class PartMember extends Controller
+class Withdraw extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    protected $table = 'part_member';
+    protected $table = 'withdraw';
 
     /**
      * @auth true
@@ -35,7 +36,7 @@ class PartMember extends Controller
     {
         $data=input();
 
-        $this->title = '兼职报名管理';
+        $this->title = '用户提现';
         $query = $this->_query($this->table)->equal('status');
         if(isset($data['username'])){
             $member_id=MemberModel::where('username','like','%'.$data['username'].'%')->column('id');
@@ -67,23 +68,16 @@ class PartMember extends Controller
     protected function _index_page_filter(&$data)
     {
 
-        $this->part_status=PartMemberModel::STATUS;
+        $this->w_status=WithdrawModel::STATUS;
 
         foreach ($data as $k=>$v)
         {
             //用户信息
             $member=MemberModel::where('id',$v['mid'])->find();
             $data[$k]['username']=$member['username'];
-            $data[$k]['sex']=$member['sex'];
-            $data[$k]['age']=$member['age'];
             $data[$k]['phone']=$member['phone'];
             $data[$k]['credit']=$member['credit'];
-
-            //兼职信息
-            $part=PartModel::where('id',$v['part_id'])->find();
-            $data[$k]['part_title']=$part['title'];
-
-            $data[$k]['status_s']=PartMemberModel::STATUS[$v['status']];
+            $data[$k]['status_s']=WithdrawModel::STATUS[$v['status']];
 
         }
 

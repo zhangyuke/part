@@ -12,6 +12,7 @@ class MemberModel extends Model{
 
 
     protected $table='store_member';
+    const USER_TYPE=[1=>'普通用户',2=>'带队'];
 
     /**
      * 关联收货地址表
