@@ -13,7 +13,7 @@ class WithdrawModel extends Model{
 
     protected $table='withdraw';
 
-    const STATUS=[1=>'提交',2=>'通过',3=>'拒绝'];
+    const STATUS=[0=>'未知',1=>'提交',2=>'通过',3=>'拒绝'];
 
     /**
      * 关联用户

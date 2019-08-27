@@ -82,4 +82,26 @@ class Withdraw extends Controller
         }
 
     }
+
+
+    /**
+     * 禁用兼职信息
+     * @auth true
+     */
+    public function forbid()
+    {
+        $this->_save($this->table, ['status' => 1]);
+    }
+
+    /**
+     * 启用兼职信息
+     * @auth true
+     */
+    public function resume()
+    {
+        $this->_save($this->table, ['status' => 1]);
+    }
+
+
+
 }
