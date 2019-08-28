@@ -3,17 +3,17 @@
 
 namespace app\index\controller;
 
-use think\Db;
+use app\common\model\OrderModel;
 use think\Exception;
 use think\Validate;
 use app\common\model\MemberModel;
 
 /**
- * 订单
+ * 用户订单
  * Class Index
  * @package app\index\controller
  */
-class Order extends Base
+class UserOrder extends Base
 {
 
 
@@ -22,13 +22,13 @@ class Order extends Base
      */
     public function index()
     {
-        
-        $user=MemberModel::get_user_info($this->user_id);
+        $status=input('status')?? 1;
+        $order=OrderModel::where('status',$status)->order('id desc')->select();
 
-        return return_json($user);
+        return $order;
     }
 
-
+    
 
 
 

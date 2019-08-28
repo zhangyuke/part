@@ -26,6 +26,7 @@
             <th class='text-left nowrap' width="10%">商品状态</th>
 
             <th class='text-left nowrap' width="10%">售价</th>
+            <th class='text-left nowrap' width="10%">销量</th>
 
             <th>操作</th>
         </tr>
@@ -50,13 +51,13 @@
                 {eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
             </td>
 
-
             <td class='text-left nowrap '>
                 {$vo.price|default='--'}
             </td>
 
-
-
+            <td class='text-left nowrap '>
+                {$vo.number_sales|default='--'}
+            </td>
 
             <td class='text-left nowrap'>
 

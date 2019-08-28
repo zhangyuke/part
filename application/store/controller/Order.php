@@ -4,6 +4,7 @@
 
 namespace app\store\controller;
 
+use app\common\model\OrderModel;
 use library\Controller;
 use library\tools\Express;
 use think\Db;
@@ -46,6 +47,7 @@ class Order extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
+        $this->status=OrderModel::STATUS;
         $goodsList = Db::name('StoreOrderList')->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
         $mids = array_unique(array_merge(array_column($data, 'mid'), array_column($data, 'from_mid')));
         $memberList = Db::name('StoreMember')->whereIn('id', $mids)->select();
@@ -107,9 +109,27 @@ class Order extends Controller
             if (empty($express)) $this->error('发货快递公司异常，请重新选择快递公司！');
             $vo['express_company_title'] = $express['express_title'];
             $vo['express_send_at'] = empty($order['express_send_at']) ? date('Y-m-d H:i:s') : $order['express_send_at'];
-            $vo['express_state'] = '1';
-            $vo['status'] = '4';
+            $vo['status'] = '3';
         }
     }
+
+
+
+    /**
+     * 修改快递管理
+     * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    public function order_end()
+    {
+        $this->_save($this->table, ['status' => '4']);
+    }
+
+
+
 
 }
