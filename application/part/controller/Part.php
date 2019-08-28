@@ -99,6 +99,7 @@ class Part extends Controller
         if ($this->request->isGet()) {
 
 
+            $data['contact_phone']=session('admin_user')['username'];
             $this->cates = Db::name('PartCate')->where(['is_deleted' => '0', 'status' => '1'])->order('sort desc,id desc')->select();
         }
     }

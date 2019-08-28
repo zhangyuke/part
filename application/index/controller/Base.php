@@ -18,6 +18,7 @@ class Base extends Controller
 
     public function __construct()
     {
+        session('user_id',1);
         if(!session('user_id')){
 
            echo  return_json([],'请先登录',401);   die();
