@@ -75,6 +75,50 @@ class Member extends Base
 
     }
 
+    /**
+     * 带队申请
+     */
+    public function team_auth()
+    {
+        $user=MemberModel::get_user_info($this->user_id);
+        if($user['user_type'] == 2){
+            //return return_json([],'已认证',400);
+        }
+        $data=input();
+        $rule =   [
+            'username'  => 'require|chs',
+            'phone'   => 'require|mobile',
+            'age' => 'number|between:16,50',
+            'sex' => 'require|',
+            'id_card_img' => 'url',
+        ];
+        $message  =   [
+            'username.require' => '姓名必须',
+            'username.chs'     => '姓名必须是汉字',
+            'phone.require'   => '手机号必须',
+            'phone.mobile'  => '手机号格式错误',
+            'age.number'        => '年龄必须数字',
+            'age.between'        => '必须在16岁以上',
+            'id_card_img.url'        => '头像地址格式错误',
+        ];
+        $validate =new Validate($rule, $message);
+        $result   = $validate->check($data);
+
+        if($result == false){
+            return return_json([],$validate->getError(),400);
+        }
+        \db('team_auth')->insert([
+            'mid'=>$this->user_id,
+            'status'=>1,
+            'age'=>$data['age'],
+            'sex'=>$data['sex'],
+            'id_card_img'=>$data['id_card_img'],
+            'create_at'=>date('Y-m-d H:i:s'),
+            'update_at'=>date('Y-m-d H:i:s'),
+        ]);
+        return return_json();
+    }
+
 
 
 

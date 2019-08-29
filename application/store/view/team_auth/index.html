@@ -1,0 +1,46 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='team_auth/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>会员姓名</th>
+            <th class='text-left nowrap'>会员手机</th>
+            <th class='text-left nowrap'>状态</th>
+            <th class='text-left nowrap'>提交时间</th>
+            <th class='text-left nowrap'>处理时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-left'><a href="/admin.html#/store/member/index?id={$vo.mid}">{$vo.username|default='--'}</a> </td>
+            <td class='text-left'>{$vo.phone|default='--'}</td>
+            <td class='text-left'>{$vo.status_s|default='--'}</td>
+
+            <td class='text-left'>{$vo.create_at|format_datetime}</td>
+            <td class='text-left'>{$vo.update_at|format_datetime}</td>
+            <td class='text-left nowrap'>
+
+                <div class="nowrap margin-bottom-5">
+
+                    {if isset($vo.status) and $vo.status eq 1}
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">通 过</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">拒 绝</a>
+                    {/if}
+                </div>
+
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

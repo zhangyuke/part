@@ -35,6 +35,11 @@ class Part extends Controller
     {
         $this->title = '兼职信息管理';
         $query = $this->_query($this->table)->equal('status,cate_id')->like('title');
+        //限制用户
+        $contact_phone=session('admin_user')['username'];
+        if($contact_phone != 'admin'){
+            $query->where(['contact_phone' =>$contact_phone]);
+        }
         $query->where(['is_deleted' => '0'])->order('sort desc,id desc')->page();
     }
 
