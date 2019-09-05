@@ -36,22 +36,20 @@ class TeamAuth extends Controller
         $data=input();
 
         $this->title = '带队申请';
-        $query = $this->_query($this->table)->equal('status');
-        if(isset($data['username'])){
-            $member_id=MemberModel::where('username','like','%'.$data['username'].'%')->column('id');
+        $query = $this->_query($this->table);
+        if(isset($data['nickname'])){
+            $member_id=MemberModel::where('nickname','like','%'.$data['nickname'].'%')->column('id');
             $query=$query->whereIn('mid',$member_id);
 
         }
         if(isset($data['phone'])){
-            $member_id=MemberModel::where('phone','like','%'.$data['phone'].'%')->column('id');
-            $query=$query->whereIn('mid',$member_id);
+            $query=$query->where('phone',$data['phone']);
 
         }
-        if(isset($data['part_name'])){
-            $part_id=PartModel::where('title','like','%'.$data['part_name'].'%')->column('id');
-            $query=$query->whereIn('part_id',$part_id);
-
+        if(isset($data['status'])){
+            $query=$query->where('status',$data['status']);
         }
+
         $query->dateBetween('create_at')->order('id desc')->page();
     }
 
@@ -73,9 +71,7 @@ class TeamAuth extends Controller
         {
             //用户信息
             $member=MemberModel::where('id',$v['mid'])->find();
-            $data[$k]['username']=$member['username'];
-            $data[$k]['phone']=$member['phone'];
-            $data[$k]['credit']=$member['credit'];
+            $data[$k]['nickname']=$member['nickname'];
             if($v['status'] ==1 ){
                 $data[$k]['status_s']='提交';
             }elseif($v['status'] ==2 ) {

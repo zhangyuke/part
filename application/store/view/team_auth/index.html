@@ -7,8 +7,12 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='text-left nowrap'>会员姓名</th>
+            <th class='text-left nowrap'>昵称</th>
+            <th class='text-left nowrap'>姓名</th>
             <th class='text-left nowrap'>会员手机</th>
+            <th class='text-left nowrap'>身份证号</th>
+            <th class='text-left nowrap'>性别</th>
+            <th class='text-left nowrap'>年龄</th>
             <th class='text-left nowrap'>状态</th>
             <th class='text-left nowrap'>提交时间</th>
             <th class='text-left nowrap'>处理时间</th>
@@ -19,23 +23,27 @@
         <tbody>
         {foreach $list as $key=>$vo}
         <tr>
-            <td class='text-left'><a href="/admin.html#/store/member/index?id={$vo.mid}">{$vo.username|default='--'}</a> </td>
+            <td class='text-left'><a href="/admin.html#/store/member/index?id={$vo.mid}">{$vo.nickname|default='--'}</a> </td>
+            <td class='text-left'>{$vo.username|default='--'} </td>
             <td class='text-left'>{$vo.phone|default='--'}</td>
-            <td class='text-left'>{$vo.status_s|default='--'}</td>
+            <td class='text-left nowrap'>
+                {notempty name='vo.id_card_img'}
+                <img data-tips-image style="width:60px;height:60px" src="{$vo.id_card_img|default=''}" class="margin-right-5 text-top">
+                {/notempty}
+            </td>
 
+            <td class='text-left'>{$vo.sex|default='--'}</td>
+            <td class='text-left'>{$vo.age|default='--'}</td>
+            <td class='text-left'>{$vo.status_s|default='--'}</td>
             <td class='text-left'>{$vo.create_at|format_datetime}</td>
             <td class='text-left'>{$vo.update_at|format_datetime}</td>
             <td class='text-left nowrap'>
-
                 <div class="nowrap margin-bottom-5">
-
                     {if isset($vo.status) and $vo.status eq 1}
-                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">通 过</a>
-                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">拒 绝</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#2">通 过</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#3">拒 绝</a>
                     {/if}
                 </div>
-
-
             </td>
         </tr>
         {/foreach}
