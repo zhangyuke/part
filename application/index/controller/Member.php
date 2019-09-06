@@ -162,7 +162,7 @@ class Member extends Base
         $data['is_default'] = $param['is_default'];
         $data['create_at'] = date('Y-m-d H:i:s');
 
-        MemberAddressModel::insert($data);
+       // MemberAddressModel::insert($data);
 
         return return_json();
     }
@@ -245,9 +245,12 @@ class Member extends Base
     }
 
 
-
     /**
      * 提现
+     * @return false|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function add_withdraw{
 
@@ -287,6 +290,7 @@ class Member extends Base
             Db::rollback();
             return return_json('','提交失败',400);
         }
+
 
     }
     //提现记录

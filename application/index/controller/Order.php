@@ -4,6 +4,9 @@
 namespace app\index\controller;
 
 use app\common\model\GoodsModel;
+use app\common\model\MemberAddressModel;
+use app\common\model\OrderListModel;
+use app\common\model\OrderModel;
 use think\Db;
 use think\Exception;
 use think\Validate;
@@ -38,9 +41,61 @@ class Order extends Base
     {
         $goods_id=input('goods_id');
         if(!$goods_id){
-
+            return return_json('','参数错误',400);
         }
         $goods=GoodsModel::where('id',$goods_id)->find();
+        if(!$goods){
+            return return_json('','商品不存在',400);
+        }
+        $a_id=input('a_id');
+        $address = MemberAddressModel::where('id', $a_id)->where('mid',$this->user_id)->find();
+        if(!$address){
+            return return_json('','收货地址不存在',400);
+        }
+
+        do{
+            $order_no=date('ymd his').mt_srand(000000,999999).time();
+        }while(OrderModel::where('order_no',$order_no)->find());
+
+        //添加订单
+        Db::startTrans();
+        try{
+        OrderModel::insert(
+            [
+                'mid'=>$this->user_id,
+                'order_no'=>$order_no,
+                'price_goods'=>$goods->price,
+                'pay_price'=>$goods->price,
+                'status'=>1,
+                'express_address_id'=>$address->id,
+                'express_name'=>$address->name,
+                'express_phone'=>$address->phone,
+                'express_province'=>$address->province,
+                'express_city'=>$address->city,
+                'express_area'=>$address->area,
+                'express_address'=>$address->address,
+                'create_at'=>date('Y-m-d H:i:s'),
+                'update_at'=>date('Y-m-d H:i:s')
+            ]
+        );
+        //添加订单详情
+        OrderListModel::insert([
+            'order_no'=>$order_no,
+            'goods_id'=>$goods->id,
+            'goods_title'=>$goods->title,
+            'goods_logo'=>$goods->goods_logo,
+            'price_selling'=>$goods->price,
+            'create_at'=>date('Y-m-d H:i:s'),
+        ]);
+            Db::commit();
+            return return_json(['order_no'=>$order_no],'订单创建成功',200);
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return return_json('','提交失败',400);
+        }
+
+
     }
 
 
