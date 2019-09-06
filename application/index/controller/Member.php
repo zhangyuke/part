@@ -4,6 +4,7 @@
 namespace app\index\controller;
 
 use app\common\model\MemberAddressModel;
+use app\common\model\WithdrawModel;
 use think\Db;
 use think\Exception;
 use think\Validate;
@@ -240,6 +241,65 @@ class Member extends Base
         MemberAddressModel::where(['id' => $id, 'mid' => $this->user_id])->update(['is_default' => 2, 'update_at' => date('Y-m-d H:i:s')]);
 
         return return_json([],'设置成功',200);
+
+    }
+
+
+
+    /**
+     * 提现
+     */
+    public function add_withdraw{
+
+        $user_money=MemberModel::get_user_info($this->user_id);
+        $money=input('money');
+        if($money < 100  || $money %100 != 0){
+            return return_json('','提现金额必须是100的整数倍',400);
+        }
+
+        if($user_money['balance'] < $money){
+            return return_json([],'余额不足',400);
+        }
+
+        Db::startTrans();
+        try{
+            //扣除余额
+
+            MemberModel::where('id',$this->user_id)
+                ->update([
+                    'balance'=>$user_money['balance']-$money,
+                    'update_at'=>date('Y-m-d H:i:s')
+                ]);
+            //增加提现记录
+            WithdrawModel::insert([
+                'mid'=>$this->user_id,
+                'amount'=>$money,
+                'balance'=>$user_money['balance']-$money,
+                'status'=>1,
+                'create_at'=>date('Y-m-d H:i:s'),
+                'update_at'=>date('Y-m-d H:i:s'),
+            ]);
+
+            Db::commit();
+            return return_json();
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return return_json('','提交失败',400);
+        }
+
+    }
+    //提现记录
+    public function withdraw_record()
+    {
+        $page=input('page',1);
+        $record=WithdrawModel::where(['mid'=>$this->user_id])
+            ->order('id desc')->page($page,15);
+        foreach ($record  as $k=>$v)
+        {
+            $v['status_s']=WithdrawModel::STATUS[$v['status']];
+        }
+        return return_json($record);
 
     }
 

@@ -3,6 +3,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\GoodsModel;
 use think\Db;
 use think\Exception;
 use think\Validate;
@@ -30,7 +31,17 @@ class Order extends Base
 
 
 
+    /**
+     * 下单
+     */
+    public function add_order()
+    {
+        $goods_id=input('goods_id');
+        if(!$goods_id){
 
+        }
+        $goods=GoodsModel::where('id',$goods_id)->find();
+    }
 
 
 
