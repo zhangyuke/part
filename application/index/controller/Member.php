@@ -6,7 +6,6 @@ namespace app\index\controller;
 use app\common\model\MemberAddressModel;
 use app\common\model\WithdrawModel;
 use think\Db;
-use think\Exception;
 use think\Validate;
 use app\common\model\MemberModel;
 
@@ -85,13 +84,24 @@ class Member extends Base
         if($user['user_type'] == 2){
             //return return_json([],'已认证',400);
         }
+
+        $file = request()->file('id_card_img');
+        if(empty($file)) {
+            return return_json([],'shang=1',400);
+        }
+        $app_path=\think\facade\Env::get('root_path');
+        // 移动到服务器的上传目录 并且设置不覆盖
+        $upload =$file->rule('uniqid')->move( $app_path.'public/uploads/',true,false);
+
+        $id_card_img= '/uploads/'.$upload->getSaveName();
+
         $data=input();
         $rule =   [
             'username'  => 'require|chs',
             'phone'   => 'require|mobile',
             'age' => 'number|between:16,50',
-            'sex' => 'require|',
-            'id_card_img' => 'url',
+            'sex' => 'require',
+            //'id_card_img' => 'url',
         ];
         $message  =   [
             'username.require' => '姓名必须',
@@ -100,7 +110,7 @@ class Member extends Base
             'phone.mobile'  => '手机号格式错误',
             'age.number'        => '年龄必须数字',
             'age.between'        => '必须在16岁以上',
-            'id_card_img.url'        => '头像地址格式错误',
+           // 'id_card_img.url'        => '头像地址格式错误',
         ];
         $validate =new Validate($rule, $message);
         $result   = $validate->check($data);
@@ -113,7 +123,7 @@ class Member extends Base
             'status'=>1,
             'age'=>$data['age'],
             'sex'=>$data['sex'],
-            'id_card_img'=>$data['id_card_img'],
+            'id_card_img'=>$id_card_img,
             'create_at'=>date('Y-m-d H:i:s'),
             'update_at'=>date('Y-m-d H:i:s'),
         ]);
@@ -177,7 +187,11 @@ class Member extends Base
     #确认编辑收货地址
     public function editAddress()
     {
-        $address = MemberAddressModel::where('id', input('param.id'))->find();
+        $address = MemberAddressModel::where('id', input('param.id'))
+            ->where('mid', $this->user_id)->find();
+        if(!$address){
+            return return_json('','不存在',400);
+        }
         $param = input('param.');
         $data  = [];
 
@@ -188,27 +202,12 @@ class Member extends Base
         $data['area']       = $param['area'];
         $data['address']    = $param['address'];
 
-        $data['update_at'] = date('Y-m-d H:i:s')();
+        $data['update_at'] = date('Y-m-d H:i:s');
 
-        if (!input('param.id') || input('param.id') == '') {
-            return return_json($data,'缺少参数',400);
-        }
-        #开启事物
-        Db::startTrans();
-        try {
-            if($address['is_default'] != 2){
-                $data['is_default'] = $param['is_default'];
-            }
-            MemberAddressModel::where('id', input('param.id'))->update($data);
-            MemberAddressModel::where(['mid'=>$address['mid'],'id'=>['<>', input('param.id')]])->update(['is_default'=>1]);
-            #提交事物
-            Db::commit();
-            return return_json([],'编辑成功',200);
-        } catch (Exception $e) {
-            #回滚事物
-            Db::rollback();
-            return return_json([],'编辑失败',400);
-        }
+
+        MemberAddressModel::where('id', input('param.id'))->update($data);
+        return return_json([],'编辑成功',200);
+
     }
 
     #删除收货地址
@@ -232,10 +231,10 @@ class Member extends Base
         $id = input('param.id');
 
         #设置用户的收货地址全部
-        $res = MemberAddressModel::where('mid', $this->user_id)->update(['is_default' => 1, 'update_at' => date('Y-m-d H:i:s')()]);
+        $res = MemberAddressModel::where('mid', $this->user_id)->update(['is_default' => 1, 'update_at' => date('Y-m-d H:i:s')]);
 
         if (!$res) {
-            return return_json([],'失败',200);
+            return return_json([],'失败',400);
         }
 
         MemberAddressModel::where(['id' => $id, 'mid' => $this->user_id])->update(['is_default' => 2, 'update_at' => date('Y-m-d H:i:s')]);
@@ -252,7 +251,7 @@ class Member extends Base
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function add_withdraw{
+    public function add_withdraw(){
 
         $user_money=MemberModel::get_user_info($this->user_id);
         $money=input('money');
@@ -297,12 +296,13 @@ class Member extends Base
     public function withdraw_record()
     {
         $page=input('page',1);
-        $record=WithdrawModel::where(['mid'=>$this->user_id])
-            ->order('id desc')->page($page,15);
+        $record=WithdrawModel::where('mid',$this->user_id)
+            ->order('id','desc')->limit($page,15)->select();
         foreach ($record  as $k=>$v)
         {
             $v['status_s']=WithdrawModel::STATUS[$v['status']];
         }
+
         return return_json($record);
 
     }

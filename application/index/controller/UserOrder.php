@@ -20,8 +20,8 @@ class UserOrder extends Base
      */
     public function index()
     {
-        $status=input('status')?? 1;
-        $page=input('page')??1;
+        $status=input('status',1);
+        $page=input('page',1);
         $order=OrderModel::where('status',$status)
             ->where('mid',$this->user_id)->order('id desc')
             ->page($page,10)->select();
@@ -37,12 +37,15 @@ class UserOrder extends Base
      */
     public function index_info()
     {
-        $id=input('id')?? 1;
+        $id=input('id');
         $order=OrderModel::where('id',$id)
             ->where('mid',$this->user_id)->find();
 
-        $order->order_list=OrderListModel::where('order_no',$order->order_no)->select();
-        $order->pay_type  =OrderModel::PAY_TYPE[$order->pay_type];
+        if(!$order){
+            return return_json('','参数错误',400);
+        }
+        $order['order_list']=OrderListModel::where('order_no',$order['order_no'])->select();
+        $order['pay_type']  =OrderModel::PAY_TYPE[$order['pay_type']];
 
         return return_json($order);
     }

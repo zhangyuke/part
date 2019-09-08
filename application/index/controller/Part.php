@@ -77,15 +77,15 @@ class Part extends Controller
     public function get_part_info()
     {
         $part_id=input('part_id');
-        $longitude=input('longitude');
-        $latitude=input('latitude');
+//        $longitude=input('longitude');
+//        $latitude=input('latitude');
         if(!$part_id){
             return return_json([],'参数错误',400);
         }
         $part_info=PartModel::where('id',$part_id)->where('status',1)->find();
 
         if($part_info){
-            $part_info['distance']=getDistance($longitude,$latitude,$part_info['longitude'],$part_info['latitude']);
+            //$part_info['distance']=getDistance($longitude,$latitude,$part_info['longitude'],$part_info['latitude']);
             $part_info['image']=string_to_arr($part_info['image']);
         }
 
