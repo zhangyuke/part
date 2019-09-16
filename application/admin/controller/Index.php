@@ -5,6 +5,10 @@
 namespace app\admin\controller;
 
 use app\admin\service\NodeService;
+use app\common\model\MemberModel;
+use app\common\model\OrderModel;
+use app\common\model\PartModel;
+use app\common\model\WithdrawModel;
 use library\Controller;
 use library\tools\Data;
 use think\Console;
@@ -34,6 +38,7 @@ class Index extends Controller
         if (empty($this->menus) && !NodeService::islogin()) {
             $this->redirect('@admin/login');
         } else {
+
             $this->fetch();
         }
     }
@@ -45,6 +50,28 @@ class Index extends Controller
     {
         $this->think_ver = \think\App::VERSION;
         $this->mysql_ver = Db::query('select version() as ver')[0]['ver'];
+        $user_name=session('admin_user')['username'];
+
+        //用户总数
+        $user_count=MemberModel::count();
+        //订单总数
+        $order_count=OrderModel::where('status','>',1)->count();
+        //发布兼职总数
+        if($user_name != 'admin'){
+            $part_count=PartModel::where('phone',$user_name)->count();
+        }else{
+            $part_count=PartModel::count();
+        }
+
+        //提现总数
+        $withdraw_count=WithdrawModel::sum('amount');
+
+        $this->assign(['user_name'=>$user_name,
+            'user_count'=>$user_count,
+            'order_count'=>$order_count,
+            'part_count'=>$part_count,
+            'withdraw_count'=>$withdraw_count
+        ]);
         $this->fetch();
     }
 

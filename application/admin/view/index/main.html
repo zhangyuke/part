@@ -36,10 +36,11 @@
     <div class="margin-bottom-15">统计</div>
     <div class="layui-row layui-col-space15">
 
+        {if  $user_name == 'admin'}
         <div class="layui-col-sm6 layui-col-md3">
             <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#ff7d7d,#fb2c95)">
                 <div>用户总量</div>
-                <div>1,634</div>
+                <div>{$user_count}</div>
                 <div>当前用户总数量</div>
             </div>
             <i class="store-total-icon layui-icon layui-icon-user"></i>
@@ -47,7 +48,7 @@
         <div class="layui-col-sm6 layui-col-md3">
             <div class="store-total-item nowrap" style="background:linear-gradient(-113deg,#c543d8,#925cc3)">
                 <div>订单总量</div>
-                <div>148</div>
+                <div>{$order_count}</div>
                 <div>已付款订单总数量</div>
             </div>
             <i class="store-total-icon layui-icon layui-icon-read"></i>
@@ -55,7 +56,7 @@
         <div class="layui-col-sm6 layui-col-md3">
             <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2)">
                 <div>发布兼职总量</div>
-                <div>63</div>
+                <div>{$part_count}</div>
                 <div>当前兼职总数量</div>
             </div>
             <i class="store-total-icon layui-icon layui-icon-template-1"></i>
@@ -63,11 +64,24 @@
         <div class="layui-col-sm6 layui-col-md3">
             <div class="store-total-item nowrap" style="background:linear-gradient(-141deg,#ecca1b,#f39526)">
                 <div>提现总额</div>
-                <div>11</div>
+                <div>{$withdraw_count}</div>
                 <div>当前提现总额</div>
             </div>
             <i class="store-total-icon layui-icon layui-icon-survey"></i>
         </div>
+        {/if}
+
+        {if $user_name !='admin'}
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2)">
+                <div>发布兼职总量</div>
+                <div>{$part_count}</div>
+                <div>当前兼职总数量</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+        {/if}
+
     </div>
 </div>
 

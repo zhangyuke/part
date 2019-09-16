@@ -320,18 +320,16 @@ if (!function_exists('download')) {
 }
 
 
-
 if (!function_exists('dd')) {
     /**
      * 浏览器友好的变量输出
-     * @param mixed     $var 变量
+     * @param mixed     $data 变量
      * @param boolean   $echo 是否输出 默认为true 如果为false 则返回输出字符串
-     * @param string    $label 标签 默认为空
      * @return void|string
      */
-    function dd($var, $echo = true, $label = null)
+    function dd($data)
     {
-         Debug::dump($var, $echo, $label); die;
+         dump($data,true,null); die;
     }
 }
 
@@ -702,7 +700,13 @@ if (!function_exists('widget')) {
      */
     function widget($name, $data = [])
     {
-        return app()->action($name, $data, 'widget');
+        $result = app()->action($name, $data, 'widget');
+
+        if (is_object($result)) {
+            $result = $result->getContent();
+        }
+
+        return $result;
     }
 }
 

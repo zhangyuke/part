@@ -66,6 +66,7 @@ class BaseClient extends PaymentBaseClient
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \EasyWeChat\MicroMerchant\Kernel\Exceptions\InvalidSignException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function httpUpload(string $url, array $files = [], array $form = [], array $query = [], $returnResponse = false)
     {
@@ -129,6 +130,7 @@ class BaseClient extends PaymentBaseClient
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \EasyWeChat\MicroMerchant\Kernel\Exceptions\InvalidSignException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function request(string $endpoint, array $params = [], $method = 'post', array $options = [], $returnResponse = false)
     {
@@ -235,13 +237,13 @@ class BaseClient extends PaymentBaseClient
     /**
      * getSign.
      *
-     * @param $params
+     * @param array $params
      *
      * @return string
      *
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      */
-    protected function getSign($params)
+    protected function getSign(array $params)
     {
         $params = array_filter($params);
 
