@@ -5,7 +5,6 @@
 namespace app\store\controller;
 
 use app\common\model\MemberModel;
-use app\common\model\PartModel;
 use app\common\model\WithdrawModel;
 use library\Controller;
 
@@ -86,22 +85,19 @@ class TeamAuth extends Controller
 
 
     /**
-     * 禁用兼职信息
+     * 处理申请
      * @auth true
      */
     public function forbid()
     {
-        $this->_save($this->table, ['status' => 1]);
+        $status=input('status');
+        if($status ==2){
+            $user_id=TeamAuth::where('id',input('id'))->value('mid');
+            MemberModel::where('id',$user_id)->update(['user_type'=>2]);
+        }
+        $this->_save($this->table, ['status' => $status]);
     }
 
-    /**
-     * 启用兼职信息
-     * @auth true
-     */
-    public function resume()
-    {
-        $this->_save($this->table, ['status' => 1]);
-    }
 
 
 

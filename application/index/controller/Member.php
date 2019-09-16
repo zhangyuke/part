@@ -81,8 +81,12 @@ class Member extends Base
     public function team_auth()
     {
         $user=MemberModel::get_user_info($this->user_id);
-        if($user['user_type'] == 2){
-            //return return_json([],'已认证',400);
+        if($user['is_auth'] == 0){
+            return return_json([],'请先实名认证',400);
+        }
+        $count=\db('team_auth')->where(['mid'=>$this->user_id])->count();
+        if($count > 0){
+            return return_json([],'已申请过',400);
         }
 
         $file = request()->file('id_card_img');
