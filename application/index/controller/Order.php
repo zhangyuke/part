@@ -26,10 +26,14 @@ class Order extends Base
      */
     public function index()
     {
-        
-        $user=MemberModel::get_user_info($this->user_id);
+        $order_no=input('order_no');
+        $pay_price=OrderModel::where('order_no',$order_no)->value('pay_price');
+        if(!$pay_price){
+            return return_json('','参数错误',400);
+        }
+        $balance=MemberModel::where('id',$this->user_id)->value('balance');
 
-        return return_json($user);
+        return return_json(['price'=>$pay_price,'balance'=>$balance]);
     }
 
 
@@ -52,11 +56,15 @@ class Order extends Base
         if(!$address){
             return return_json('','收货地址不存在',400);
         }
+        $count=OrderModel::where(['mid'=>$this->user_id,'status'=>1,'price_goods'=>$goods->price])->count();
+        if($count > 0){
+            return return_json('','请勿重复下单',400);
+        }
 
         do{
-            $order_no=date('ymd his').mt_srand(000000,999999).time();
-        }while(OrderModel::where('order_no',$order_no)->find());
+            $order_no=date('Ymdhis').mt_srand(000000,999999).time();
 
+        }while(OrderModel::where('order_no',$order_no)->find());
         //添加订单
         Db::startTrans();
         try{
@@ -83,7 +91,7 @@ class Order extends Base
             'order_no'=>$order_no,
             'goods_id'=>$goods->id,
             'goods_title'=>$goods->title,
-            'goods_logo'=>$goods->goods_logo,
+            'goods_logo'=>$goods->logo,
             'price_selling'=>$goods->price,
             'create_at'=>date('Y-m-d H:i:s'),
         ]);

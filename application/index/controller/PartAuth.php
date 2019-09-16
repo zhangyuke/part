@@ -6,7 +6,7 @@ namespace app\index\controller;
 use app\common\model\PartMemberModel;
 use app\common\model\PartModel;
 use Endroid\QrCode\QrCode;
-use think\Cache;
+use think\facade\Cache;
 
 /**
  * 打卡签到
