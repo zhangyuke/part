@@ -7,6 +7,7 @@ use app\common\model\PartMemberModel;
 use app\common\model\PartModel;
 use Endroid\QrCode\QrCode;
 use think\facade\Cache;
+use think\Db;
 
 /**
  * 打卡签到
@@ -17,7 +18,7 @@ class PartAuth extends Base
 {
 
     /**
-     * 我的兼职列表
+     * 带队我的兼职列表
      */
     public function get_part()
     {
@@ -94,6 +95,60 @@ class PartAuth extends Base
         return return_json('','打卡成功');
     }
 
+    /**
+     * 学生 报名
+     */
+    public function add_part()
+    {
+        $part_id=input('part_id');
+        //查询今天的兼职
+        $part=PartModel::where('id',$part_id)->where('status',1)->find();
+        if(!$part){
+            return return_json([],'不存在的信息',400);
+        }
+        if(PartMemberModel::where(['mid'=>$this->user_id])->count()){
+            return return_json([],'已报名',400);
+        }
+        /**
+         * 添加记录
+         */
+        //添加订单
+        Db::startTrans();
+        try{
+            PartMemberModel::insert([
+                'status'=>0,
+                'create_at'=>date('Y-m-d H:i:s'),
+                'update_at'=>date('Y-m-d H:i:s'),
+                'mid'=>$this->user_id,
+                'part_id'=>$part['id'],
+            ]);
+            Db::commit();
+            return return_json([],'报名成功，请等待审核',200);
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return return_json('','提交失败',400);
+        }
+
+    }
+
+    /**
+     * 学生报名记录
+     */
+    public function get_part_member()
+    {
+        $page=input('page',1);
+
+        $part_list=PartMemberModel::where('mid',$this->user_id)
+            ->order('id','desc')->page($page,15);
+        $part_list=$part_list->select();
+        foreach ($part_list as $k=>$v)
+        {
+            $v['part']=PartModel::where('id',$v['part_id'])->find();
+        }
+        return return_json($part_list);
+
+    }
 
 
 
