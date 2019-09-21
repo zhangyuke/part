@@ -5,12 +5,11 @@
 namespace app\index\controller;
 
 use app\common\model\GoodsModel;
-use app\common\model\PartModel;
 use library\Controller;
 
 /**
  * 商城入口
- * Class Index
+ * Class Goods
  * @package app\index\controller
  */
 class Goods extends Controller
