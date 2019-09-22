@@ -74,10 +74,11 @@ class ShopPingCar extends Base
 
     //删除购物车
     public function del_car(){
-        $id = input('param.id/a');
+        $id = input('id');
         if(!$id){
             return json(['status'=>302,'message'=>'抱歉，要删除的商品不存在']);
         }
+        $id=explode(',',$id);
         $r =ShopPingCarModel::whereIn('id',$id)->delete();
         if($r){
             return return_json('','删除成功',200);

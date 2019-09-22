@@ -3,6 +3,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\MemberModel;
 use app\common\model\PartMemberModel;
 use app\common\model\PartModel;
 use Endroid\QrCode\QrCode;
@@ -31,6 +32,30 @@ class PartAuth extends Base
         return return_json($part_list);
     }
 
+    /**
+     * 带队我的兼职详情
+     */
+    public function get_part_info()
+    {
+        $part_id=input('part_id');
+        //查询今天的兼职
+        $part=PartModel::where('id',$part_id)->where('contact_phone',$this->phone)->find();
+        if(!$part){
+            return return_json([],'不存在的信息',400);
+        }
+        //报名人员
+        $part_list=PartMemberModel::where('part_id',$part_id)
+            ->order('id','desc');
+        $part_list=$part_list->select();
+
+        foreach ($part_list as $k=>$v)
+        {
+            $v['member']=MemberModel::where('id',$v['mid'])->find();
+        }
+
+        return return_json($part_list);
+    }
+
 
     /**
      * 带队二维码
@@ -55,8 +80,17 @@ class PartAuth extends Base
 
         $qrCode = new QrCode($urlToEncode);
 
-        header('Content-Type: '.$qrCode->getContentType());
-        echo $qrCode->writeString();exit();
+        //header('Content-Type: '.$qrCode->getContentType());
+
+
+        $app_path=\think\facade\Env::get('root_path');
+        // 移动到服务器的上传目录 并且设置不覆盖
+        $path=$app_path.'public/qrcode/'.date('Ymd').time().rand(0000,66666).$part_id.'qrcode.png';
+
+        $qrCode->writeFile($path);
+        $path_url=str_replace($app_path.'public/','',$path);
+        return return_json(WEB_URL.'/'.$path_url,'成功',200);
+        //echo $qrCode->writeString();exit();
 
     }
 
