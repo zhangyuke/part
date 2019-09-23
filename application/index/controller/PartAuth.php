@@ -29,6 +29,7 @@ class PartAuth extends Base
             ->order('sort','desc')
             ->order('id','desc')->page($page,15);
         $part_list=$part_list->select();
+
         return return_json($part_list);
     }
 
@@ -44,16 +45,12 @@ class PartAuth extends Base
             return return_json([],'不存在的信息',400);
         }
         //报名人员
-        $part_list=PartMemberModel::where('part_id',$part_id)
-            ->order('id','desc');
-        $part_list=$part_list->select();
+        $mid=PartMemberModel::where('part_id',$part_id)
+            ->column('mid');
 
-        foreach ($part_list as $k=>$v)
-        {
-            $v['member']=MemberModel::where('id',$v['mid'])->find();
-        }
+        $part->member=MemberModel::whereIn('id',$mid)->select();
 
-        return return_json($part_list);
+        return return_json($part);
     }
 
 
@@ -178,8 +175,11 @@ class PartAuth extends Base
         $part_list=$part_list->select();
         foreach ($part_list as $k=>$v)
         {
-            $v['part']=PartModel::where('id',$v['part_id'])->find();
+            $v->part=PartModel::where('id',$v['part_id'])->find();
+            $v->status=PartMemberModel::STATUS[$v->status];
         }
+
+
         return return_json($part_list);
 
     }

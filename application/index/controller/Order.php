@@ -38,6 +38,48 @@ class Order extends Base
     }
 
 
+    /**
+     * 确认订单页面
+     *
+     */
+    public function is_add_order()
+    {
+        $goods_id=input('goods_id');
+
+        if($goods_id > 0){
+            $goods = GoodsModel::field(['logo','title','price'])->where(['id'=>$goods_id,'status'=>1])->select();
+
+            return return_json($goods,'成功',200);
+
+        }
+        $car_id=input('car_id');
+
+        if(!$car_id){
+            return return_json('','参数错误',400);
+        }
+        $car_id=explode(',',$car_id);
+
+        $goods_id =ShopPingCarModel::whereIn('id',$car_id)->column('goods_id');
+
+        if(count($goods_id)>0){
+
+            foreach ($goods_id as $k=>$v){
+                $goods = GoodsModel::field(['logo','title','price'])->where(['id'=>$v,'status'=>1])->find();
+                if(!$goods){
+                    return return_json('',$goods['title'].'商品不存在',400);
+                }
+            }
+
+        }else{
+            return return_json('','商品不存在',400);
+        }
+        $all_goods=GoodsModel::field(['logo','title','price'])->whereIn('id',$goods_id)->select();
+
+        return return_json($all_goods);
+
+    }
+
+
 
     /**
      * 下单
@@ -48,7 +90,7 @@ class Order extends Base
         if(!$goods_id){
             return return_json('','参数错误',400);
         }
-        $goods=GoodsModel::where('id',$goods_id)->find();
+        $goods=GoodsModel::where('id',$goods_id)->where('status',1)->find();
         if(!$goods){
             return return_json('','商品不存在',400);
         }
@@ -75,6 +117,7 @@ class Order extends Base
                 'order_no'=>$order_no,
                 'price_goods'=>$goods->price,
                 'pay_price'=>$goods->price,
+                'price_total'=>$goods->price,
                 'status'=>1,
                 'express_address_id'=>$address->id,
                 'express_name'=>$address->name,
@@ -94,6 +137,7 @@ class Order extends Base
             'goods_title'=>$goods->title,
             'goods_logo'=>$goods->logo,
             'price_selling'=>$goods->price,
+            'number_goods'=>1,
             'create_at'=>date('Y-m-d H:i:s'),
         ]);
             Db::commit();
@@ -119,9 +163,19 @@ class Order extends Base
             return return_json('','参数错误',400);
         }
         $car_id=explode(',',$car_id);
+
         $car =ShopPingCarModel::whereIn('id',$car_id)->select();
 
-        if(!$car){
+        if(count($car)>0){
+
+            foreach ($car as $k=>$v){
+                $goods = GoodsModel::where(['id'=>$v['goods_id'],'status'=>1])->count();
+                if($goods < 1 ){
+                    return return_json('',$goods['title'].'商品不存在',400);
+                }
+            }
+
+        }else{
             return return_json('','商品不存在',400);
         }
         $a_id=input('a_id');
@@ -143,10 +197,12 @@ class Order extends Base
         try{
 
 
+
             foreach ($car as $k=>$v){
-                $goods = GoodsModel::field(['logo','title','price'])->where(['id'=>$v['goods_id']])->find();
+
+                $goods = GoodsModel::field(['logo','title','price','id'])->where(['id'=>$v['goods_id']])->find();
                 if($goods){
-                    $count_price+=$goods->price;
+                    $count_price+=$goods->price * $v['num'];
 
                     //添加订单详情
                     OrderListModel::insert([
@@ -155,6 +211,8 @@ class Order extends Base
                         'goods_title'=>$goods->title,
                         'goods_logo'=>$goods->logo,
                         'price_selling'=>$goods->price,
+                        'price_real'=>$goods->price,
+                        'number_goods'=>$v['num'],
                         'create_at'=>date('Y-m-d H:i:s'),
                     ]);
                 }
@@ -166,6 +224,7 @@ class Order extends Base
                     'order_no'=>$order_no,
                     'price_goods'=>$count_price,
                     'pay_price'=>$count_price,
+                    'price_total'=>$count_price,
                     'status'=>1,
                     'express_address_id'=>$address->id,
                     'express_name'=>$address->name,
@@ -178,7 +237,8 @@ class Order extends Base
                     'update_at'=>date('Y-m-d H:i:s')
                 ]
             );
-
+//删除购物车
+            ShopPingCarModel::whereIn('id',$car_id)->delete();
             Db::commit();
             return return_json(['order_no'=>$order_no],'订单创建成功',200);
         } catch (\Exception $e) {

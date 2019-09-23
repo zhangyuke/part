@@ -107,8 +107,9 @@ class Member extends Base
     public function addAddress()
     {
         $param = input('param.');
-        if ($param['is_default'] == 2) {
-            if (MemberAddressModel::where(['mid' => $this->user_id, 'is_default' => 2])->count()) {
+        $is_default=input('is_default',1);
+        if ($is_default == 2) {
+            if (MemberAddressModel::where(['mid' => $this->user_id, 'is_default' => 2])->count() > 0) {
                 MemberAddressModel::where('mid', $this->user_id)->update(['is_default' => 1]);
             }
         }
@@ -126,10 +127,10 @@ class Member extends Base
         $data['city']       = $param['city'];
         $data['area']       = $param['area'];
         $data['address']    = $param['address'];
-        $data['is_default'] = $param['is_default'];
+        $data['is_default'] = $is_default;
         $data['create_at'] = date('Y-m-d H:i:s');
 
-       // MemberAddressModel::insert($data);
+        MemberAddressModel::insert($data);
 
         return return_json();
     }
@@ -138,6 +139,13 @@ class Member extends Base
     public function getOneAddress()
     {
         $data = MemberAddressModel::where('id', input('param.id'))->find();
+        return return_json($data,'成功',200);
+    }
+
+    #获取默认收货地址
+    public function getDefaultAddress()
+    {
+        $data = MemberAddressModel::where(['mid' => $this->user_id, 'is_default' => 2])->find();
         return return_json($data,'成功',200);
     }
 
@@ -254,7 +262,7 @@ class Member extends Base
     {
         $page=input('page',1);
         $record=WithdrawModel::where('mid',$this->user_id)
-            ->order('id','desc')->limit($page,15)->select();
+            ->order('id','desc')->page($page,15)->select();
         foreach ($record  as $k=>$v)
         {
             $v['status_s']=WithdrawModel::STATUS[$v['status']];

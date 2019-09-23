@@ -33,7 +33,10 @@ class MemberModel extends Model{
      */
     public static function get_user_info($id)
     {
-        return self::where('id',$id)->find();
+
+            $data=self::where('id',$id)->find();
+        $data->user_type_s=self::USER_TYPE[$data->user_type];
+        return $data;
     }
 
 
