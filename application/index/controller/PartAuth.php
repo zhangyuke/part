@@ -176,7 +176,7 @@ class PartAuth extends Base
         foreach ($part_list as $k=>$v)
         {
             $v->part=PartModel::where('id',$v['part_id'])->find();
-            $v->status=PartMemberModel::STATUS[$v->status];
+            $v->status_s=PartMemberModel::STATUS[$v->status];
         }
 
 
